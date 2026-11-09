@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="options.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PhishAlert Settings</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background-color: #f7f7f7;
+    }
+    h2 {
+      color: #333;
+    }
+    .section {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      font-weight: bold;
+    }
+    input[type="checkbox"] {
+      margin-right: 0.5rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h2>PhishAlert Extension Settings</h2>
+
+  <div class="section">
+    <label>
+      <input type="checkbox" id="enableAlerts" />
+      Enable Phishing Alerts
+    </label>
+  </div>
+
+  <div class="section">
+    <label>
+      <input type="checkbox" id="enablePostPhishWarning" />
+      Enable Post-Attack Warning
+    </label>
+  </div>
+
+  <div class="section">
+    <button id="saveBtn">Save Settings</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load saved settings
+      chrome.storage.sync.get(['enableAlerts', 'enablePostPhishWarning'], (data) => {
+        document.getElementById('enableAlerts').checked = data.enableAlerts ?? true;
+        document.getElementById('enablePostPhishWarning').checked = data.enablePostPhishWarning ?? true;
+      });
+
+      // Save button logic
+      document.getElementById('saveBtn').addEventListener('click', () => {
+        const enableAlerts = document.getElementById('enableAlerts').checked;
+        const enablePostPhishWarning = document.getElementById('enablePostPhishWarning').checked;
+
+        chrome.storage.sync.set({ enableAlerts, enablePostPhishWarning }, () => {
+          alert('Settings saved successfully.');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

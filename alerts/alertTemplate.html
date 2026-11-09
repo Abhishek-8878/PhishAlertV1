@@ -1,0 +1,87 @@
+<!-- alerts/alertTemplate.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PhishAlert Warning</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .alert-container {
+      background: #fff;
+      padding: 2em;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+      text-align: center;
+      width: 90%;
+      max-width: 450px;
+    }
+
+    h2 {
+      color: #cc0000;
+      margin-bottom: 0.5em;
+    }
+
+    p {
+      margin-bottom: 1.5em;
+      font-size: 1em;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 1em;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .yes-btn {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .no-btn {
+      background: #f44336;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="alert-container">
+    <h2>⚠️ Security Notice</h2>
+    <p>You may have submitted credentials on a suspicious page.<br>Have you updated your login information?</p>
+    <div class="btn-group">
+      <button class="yes-btn">Yes, I updated</button>
+      <button class="no-btn">No, not yet</button>
+    </div>
+  </div>
+
+  <script>
+    const sendResponse = (status) => {
+      chrome.runtime.sendMessage({ type: "USER_RESPONSE", response: status }, (res) => {
+        console.log('[PhishAlert] Template Response Sent:', res);
+        window.close();
+      });
+    };
+
+    document.querySelector(".yes-btn").addEventListener("click", () => sendResponse("yes"));
+    document.querySelector(".no-btn").addEventListener("click", () => sendResponse("no"));
+  </script>
+</body>
+</html>
